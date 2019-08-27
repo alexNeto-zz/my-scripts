@@ -2,8 +2,16 @@
 
 command=$1
 
-if [[ ${command} = "dd" ]]; then
-    echo "Deleting dandling images"
+remove_dangling(){
     docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
-    echo "Done"
+}
+
+dkr_help(){
+    printf "dkr dd -> remove all dangling images\n"
+}
+
+if [[ ${command} = "dd" ]]; then
+    remove_dangling
+elif [[ ${command} == "help" ]]; then
+	dkr_help
 fi

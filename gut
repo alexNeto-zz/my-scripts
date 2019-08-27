@@ -1,20 +1,44 @@
 #!/usr/bin/env bash
 
+
+message=$2
+
+on_branch(){
+    echo $(git branch | grep "*" | cut -b3-)
+}
+
+status(){
+    printf "\n$(git status)\n"
+}
+
+sync(){
+    git add -A
+	git stash
+	git pull origin $(on_branch)
+	git stash apply
+}
+
+push(){
+    git add -A
+	git commit -m "${message}"
+	git push origin $(on_branch)
+}
+
+gut_help(){
+    printf "gut [arg] [message]\n"
+    printf "gut s -> runs git status\n"
+    printf "gut sync -> runs git add; git stash; git pull; git stash apply\n"
+    printf "gut p [message] -> git add .; git commit -m \"[message]\"; git push\n"
+}
+
 command=$1
 
 if [[ ${command} == "s" ]]; then
-	echo $(git status)
+    status
 elif [[ ${command} == "sync" ]]; then
-	git add .;
-	git stash;
-	if [[ $2 = "" ]]; then
-	    git pull origin $2;
-	else
-	    git pull;
-	fi
-	git stash apply;
+	sync
+elif [[ ${command} == "help" ]]; then
+	gut_help
 elif [[ ${command} == "p" ]]; then
-	git add .;
-	git commit -m "$2"
-	git push origin $(git branch | grep "*" | cut -b3-)
+	push
 fi
