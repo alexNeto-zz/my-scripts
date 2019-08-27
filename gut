@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+command=$1
+
+if [[ ${command} == "s" ]]; then
+	echo $(git status)
+elif [[ ${command} == "sync" ]]; then
+	git add .;
+	git stash;
+	if [[ $2 = "" ]]; then
+	    git pull origin $2;
+	else
+	    git pull;
+	fi
+	git stash apply;
+elif [[ ${command} == "p" ]]; then
+	git add .;
+	git commit -m "$2"
+	git push origin $(git branch | grep "*" | cut -b3-)
+fi
