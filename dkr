@@ -2,16 +2,16 @@
 
 command=$1
 
-remove_dangling(){
+remove_dangling() {
     docker rmi $(docker images --filter "dangling=true" -q --no-trunc)
 }
 
-dkr_help(){
+dkr_help() {
     printf "dkr dd -> remove all dangling images\n"
 }
 
-if [[ ${command} = "dd" ]]; then
+if [[ ${command} == "dd" ]]; then
     remove_dangling
 elif [[ ${command} == "help" ]]; then
-	dkr_help
+    dkr_help
 fi

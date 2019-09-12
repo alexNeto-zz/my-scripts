@@ -1,37 +1,36 @@
 #!/usr/bin/env bash
 
-
 arg2=$2
 
-on_branch(){
+on_branch() {
     echo $(git branch | grep "*" | cut -b3-)
 }
 
-status(){
+status() {
     printf "\n$(git status)\n"
 }
 
-sync(){
+sync() {
     git add -A
-	git stash
-	git pull origin $(on_branch)
-	git stash apply
+    git stash
+    git pull origin $(on_branch)
+    git stash apply
 }
 
-sync_to(){
+sync_to() {
     git add -A
-	git stash
-	git pull origin ${arg2}
-	git stash apply
+    git stash
+    git pull origin ${arg2}
+    git stash apply
 }
 
-push(){
+push() {
     git add -A
-	git commit -m "${arg2}"
-	git push origin $(on_branch)
+    git commit -m "${arg2}"
+    git push origin $(on_branch)
 }
 
-gut_help(){
+gut_help() {
     printf "gut [arg] [message]\n"
     printf "gut s -> runs git status\n"
     printf "gut sync -> runs git add; git stash; git pull; git stash apply\n"
@@ -43,9 +42,9 @@ command=$1
 if [[ ${command} == "s" ]]; then
     status
 elif [[ ${command} == "sync" ]]; then
-	sync
+    sync
 elif [[ ${command} == "help" ]]; then
-	gut_help
+    gut_help
 elif [[ ${command} == "p" ]]; then
-	push
+    push
 fi
